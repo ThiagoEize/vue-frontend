@@ -1,24 +1,13 @@
 # vue-frontend
 
-## Project setup
+### Instalando o projeto
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compilando e executando o servidor via npm
+
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
