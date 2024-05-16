@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in paginatedUsers" :key="user.id">
             <td class="id">{{ user.id }}</td>
             <td class="name">{{ user.name }}</td>
             <td class="email">{{ user.email }}</td>
@@ -22,6 +22,13 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="pagination-buttons">
+      <button :disabled="currentPage === 1" @click="prevPage">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button :disabled="currentPage === totalPages" @click="nextPage">
+        Next
+      </button>
     </div>
   </div>
 </template>
@@ -35,8 +42,17 @@ export default {
       users: [],
       currentPage: 1,
       perPage: 10,
-      totalPages: 1,
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.users.length / this.perPage);
+    },
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.perPage;
+      const end = start + this.perPage;
+      return this.users.slice(start, end);
+    },
   },
   created() {
     this.fetchUsers();
@@ -56,14 +72,24 @@ export default {
       axios
         .post("http://127.0.0.1:8000/api/user/token", { id: userId })
         .then((response) => {
-          const token = response.data.token; // Assuming the token is in response.data.token
-          localStorage.setItem("authToken", token); // Save the token to local storage
-          this.$router.push(`/tasks/${token}`); // Navigate to the TaskList component with userId
+          const token = response.data.token;
+          localStorage.setItem("authToken", token);
+          this.$router.push(`/tasks/${token}`);
         })
         .catch((error) => {
           console.error(error);
           alert("Error sending token");
         });
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
     },
   },
 };

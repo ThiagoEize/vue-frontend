@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="task in tasks" :key="task.id">
+          <tr v-for="task in paginatedTasks" :key="task.id">
             <td class="title">{{ task.title }}</td>
             <td class="description">{{ task.description }}</td>
             <td class="actions">
@@ -25,6 +25,13 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="pagination">
+      <button :disabled="currentPage === 1" @click="prevPage">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button :disabled="currentPage === totalPages" @click="nextPage">
+        Next
+      </button>
     </div>
   </div>
 </template>
@@ -37,7 +44,19 @@ export default {
   data() {
     return {
       tasks: [],
+      currentPage: 1,
+      itemsPerPage: 10,
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.tasks.length / this.itemsPerPage);
+    },
+    paginatedTasks() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.tasks.slice(start, end);
+    },
   },
   created() {
     this.fetchTasks();
@@ -85,6 +104,16 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
     },
   },
 };
@@ -208,5 +237,36 @@ td button:last-child {
 
 td button:last-child:hover {
   background-color: #cc1f1a;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.pagination button {
+  padding: 10px;
+  border: none;
+  background-color: #38c172;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:enabled {
+  background-color: #2d995b;
+}
+
+.pagination span {
+  font-size: 1rem;
+  font-weight: 600;
 }
 </style>
