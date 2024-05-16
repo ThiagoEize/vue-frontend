@@ -1,31 +1,33 @@
 <template>
-  <div>
+  <div class="users-list-container">
     <h1>Users List</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" :key="user.id">
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>
-            <button @click="sendUserToken(user.id)">Login</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th class="id">ID</th>
+            <th class="name">Name</th>
+            <th class="email">Email</th>
+            <th class="action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="user in users" :key="user.id">
+            <td class="id">{{ user.id }}</td>
+            <td class="name">{{ user.name }}</td>
+            <td class="email">{{ user.email }}</td>
+            <td class="action">
+              <button @click="sendUserToken(user.id)">Login</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
@@ -44,7 +46,7 @@ export default {
       axios
         .get(`http://127.0.0.1:8000/api/users`)
         .then((response) => {
-          this.users = response.data; // Assuming the data is in response.data.data
+          this.users = response.data;
         })
         .catch((error) => {
           console.error(error);
@@ -52,15 +54,15 @@ export default {
     },
     sendUserToken(userId) {
       axios
-        .post('http://127.0.0.1:8000/api/user/token', { id: userId })
+        .post("http://127.0.0.1:8000/api/user/token", { id: userId })
         .then((response) => {
           const token = response.data.token; // Assuming the token is in response.data.token
-          localStorage.setItem('authToken', token); // Save the token to local storage
+          localStorage.setItem("authToken", token); // Save the token to local storage
           this.$router.push(`/tasks/${token}`); // Navigate to the TaskList component with userId
         })
         .catch((error) => {
           console.error(error);
-          alert('Error sending token');
+          alert("Error sending token");
         });
     },
   },
@@ -68,19 +70,26 @@ export default {
 </script>
 
 <style scoped>
-@import '../assets/styles/colors.css';
+@import "../assets/styles/colors.css";
 
-.users-list {
-  /* background-color: var(--background-color); */
-  padding: 100px;
+.users-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  color: var(--text-color);
+  color: #333;
+  font-size: 2rem;
+  text-align: center;
   margin-bottom: 20px;
+}
+
+.table-responsive {
+  overflow-x: auto;
 }
 
 table {
@@ -89,15 +98,28 @@ table {
   margin-bottom: 20px;
 }
 
-th, td {
-  border: 1px solid var(--border-color);
-  padding: 10px;
+th,
+td {
+  padding: 15px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.id {
+  width: 5%;
+}
+.name {
+  width: 40%;
+}
+.email {
+  width: 40%;
+}
+.id {
+  width: 15%;
 }
 
 th {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: #f8f9fa;
   font-weight: bold;
 }
 
@@ -106,18 +128,30 @@ tbody tr:nth-child(even) {
 }
 
 button {
-  padding: 5px 10px;
-  margin-right: 5px;
-  background-color: var(--secondary-color);
-  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 button:hover {
-  background-color: var(--secondary-dark-color);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button {
+  background-color: #3490dc;
+  color: white;
+}
+
+button:hover {
+  background-color: #2779bd;
 }
 
 button:disabled {
