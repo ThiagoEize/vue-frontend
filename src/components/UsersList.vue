@@ -74,7 +74,7 @@ export default {
         .then((response) => {
           const token = response.data.token;
           localStorage.setItem("authToken", token);
-          this.$router.push(`/tasks/${token}`);
+          this.$router.push("/tasks");
         })
         .catch((error) => {
           console.error(error);

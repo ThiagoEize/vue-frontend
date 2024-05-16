@@ -5,7 +5,7 @@ import TaskForm from '../components/TaskForm.vue';
 
 const routes = [
     { path: '/', component: UsersList },
-    { path: '/tasks/:token', component: TaskList, props: true },
+    { path: '/tasks', component: TaskList, props: true },
     { path: '/task-form', name: 'TaskForm', component: TaskForm, props: true },
 ];
 

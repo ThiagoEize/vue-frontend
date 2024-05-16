@@ -2,7 +2,7 @@
   <div class="container">
     <h1>Task List</h1>
     <div class="button-group">
-      <button @click="goBack">Logout</button>
+      <button @click="logout">Logout</button>
       <button @click="goToCreateTask">Create Task</button>
     </div>
     <div class="table-container">
@@ -40,7 +40,6 @@
 import axios from "axios";
 
 export default {
-  props: ["token"],
   data() {
     return {
       tasks: [],
@@ -63,11 +62,12 @@ export default {
   },
   methods: {
     fetchTasks() {
+      const token = localStorage.getItem("authToken");
       axios
         .get("http://127.0.0.1:8000/api/tasks", {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${this.token}`,
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
@@ -77,24 +77,26 @@ export default {
           console.error(error);
         });
     },
-    goBack() {
+    logout() {
+      localStorage.removeItem("authToken");
       this.$router.push("/");
     },
     goToCreateTask() {
-      this.$router.push({ name: "TaskForm", params: { token: this.token } });
+      this.$router.push({ name: "TaskForm" });
     },
     editTask(task) {
       this.$router.push({
         name: "TaskForm",
-        params: { ...task, token: this.token },
+        params: { id: task.id, title: task.title, description: task.description },
       });
     },
     deleteTask(taskId) {
+      const token = localStorage.getItem("authToken");
       axios
         .delete("http://127.0.0.1:8000/api/task", {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${this.token}`,
+            Authorization: `Bearer ${token}`,
           },
           data: { id: taskId },
         })
