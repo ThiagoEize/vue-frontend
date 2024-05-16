@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  class="container">
     <h1>Task List</h1>
     <div class="button-group">
       <button @click="goBack">Logout</button>
@@ -86,22 +86,65 @@ export default {
 </script>
 
 <style scoped>
-.button-group {
+
+
+.task-list {
+  /* background-color: var(--background-color); */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: var(--text-color);
   margin-bottom: 20px;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
+
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid var(--border-color);
+  padding: 10px;
   text-align: left;
 }
+
 th {
-  background-color: #f2f2f2;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
 }
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
 button {
+  padding: 5px 10px;
   margin-right: 5px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: var(--secondary-dark-color);
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.button-group {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
 }
 </style>

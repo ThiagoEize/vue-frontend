@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="containar">
     <router-view></router-view>
   </div>
 </template>
@@ -11,5 +11,6 @@ export default {
 </script>
 
 <style>
+@import './assets/styles/colors.css';
 /* Your styles here */
 </style>
