@@ -40,9 +40,7 @@ export default {
   methods: {
     handleSubmit() {
       const token = localStorage.getItem("authToken");
-      const url = this.isEdit
-        ? `http://127.0.0.1:8000/api/task`
-        : `http://127.0.0.1:8000/api/task`;
+      const url = `http://127.0.0.1:8000/api/task`;
       const method = this.isEdit ? "put" : "post";
       const data = this.isEdit
         ? {
